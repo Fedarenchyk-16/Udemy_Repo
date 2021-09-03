@@ -1,70 +1,90 @@
 'use strict';
 
-let numberOfFilms;
-
 const personalMovieDB = {
-    count: numberOfFilms,
+    count: 0,
     movies: {},
     actors: {},
     genres: [],
-    privat: false
-};
+    privat: false,
 
+    start: function () {
+        personalMovieDB.count = +prompt('Сколько фильмов вы уже посмотрели?', '');
+        while (personalMovieDB.count == " " || personalMovieDB.count == null || isNaN(personalMovieDB.count)) {
+            personalMovieDB.count = +prompt('Сколько фильмов вы уже посмотрели?', '');
+        }
+    },
 
-function start(){
+    rememberMyFilms: function () {
+        for (let i = 0; i < 2; i++) {
+            const a = prompt('Один из последних просмотренных фильмов?', ''),
+                b = prompt('На сколько оцените его?', '');
 
-    numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
+            if (a != null && b != null && a != '' && b != '' && a.length < 50) {
+                personalMovieDB.movies[a] = b;
+            } else {
+                i--;
+            }
+        }
+    },
 
-    while(numberOfFilms == " " || numberOfFilms == null || isNaN(numberOfFilms)){
-        numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
-    }
+    detectPersonalLevel: function () {
+        if (personalMovieDB.count < 10) {
+            console.log("Просмотрено довольно мало фильмов");
+        } else if (personalMovieDB.count > 10 && personalMovieDB.count < 30) {
+            console.log("Вы классический зритель");
+        } else {
+            console.log("Вы киноман");
+        }
+    },
 
-}
+    checkPrivateValue: function () {
+        if (personalMovieDB.privat == false) {
+            console.log(personalMovieDB);
+            console.log("is false");
+        } else {
+            console.log("is true");
+        }
+    },
 
-function rememberMyFilms(){
+    askAboutGenres: function () {
+        for (let i = 0; i < 3; i++) {
+            let buff;
+            do {
+                buff = prompt(`Ваш любимый жанр под номером ${i+1}`);
+            } while (buff == '' || buff == null);
+            personalMovieDB.genres.push(buff);
+        }
+        personalMovieDB.genres.forEach((element, i) => {
+            console.log(`Любимый жанр ${i+1} - это ${element}`);
+            i++;
+        });
+    },
 
-    for (let i = 0; i < 2; i++) {
-        const a = prompt('Один из последних просмотренных фильмов?', ''),
-              b = prompt('На сколько оцените его?', '');
-    
-        if (a != null && b != null && a != '' && b != '' && a.length < 50){
-            personalMovieDB.movies[a] = b;
-        }else{
-            i--;
+    toggleVisibleMyDB: function () {
+        if (personalMovieDB.privat) {
+            personalMovieDB.privat = false;
+        } else {
+            personalMovieDB.privat = true;
         }
     }
-}
+};
 
-function detectPersonalLevel(){
-    if (personalMovieDB.count < 10){
-        console.log("Просмотрено довольно мало фильмов");
-    } else if (personalMovieDB.count > 10 && personalMovieDB.count < 30){
-        console.log("Вы классический зритель");
-    }else{
-        console.log("Вы киноман");
-    }
-}
+// personalMovieDB.start();
+// personalMovieDB.rememberMyFilms();
+// personalMovieDB.detectPersonalLevel();
+// personalMovieDB.askAboutGenres();
+// personalMovieDB.checkPrivateValue();
 
-function checkPrivateValue(){
-    if (personalMovieDB.privat == false){
-        console.log(personalMovieDB);
-        console.log("is false");
-    }else{
-        console.log("is true");
-    }
-}
+// function done(){
+//     console.log("did it");
+// }
 
-function askAboutGenres(){
-    for (let i = 0; i < 3; i++) {
-        personalMovieDB.genres.push(prompt(`Ваш любимый жанр под номером ${i+1}`));
-        // let buff = prompt(`Ваш любимый жанр под номером ${i+1}`);
-        // personalMovieDB.genres.push(buff);
-    }
-}
+// function first(callback){
+//     console.log("in it");
+//     setTimeout(function(){
+//         console.log(1);
+//     },500);
+//     callback();
+// }
 
-start();
-rememberMyFilms();
-detectPersonalLevel();
-askAboutGenres();
-checkPrivateValue();
-
+// first(done);
